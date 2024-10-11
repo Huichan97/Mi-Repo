@@ -1,0 +1,1 @@
+INSERT INTO `files` (`Nombre del archivo`, `Fecha y hora`, `Latitud`, `Longitud`, `URL`) VALUES ('2024-09-05_12-30-14_GPS.jpg', '2024:09:05 13:32:02', '-32.940199099999994', '-71.4357263', 'https://plataformamonitoreo.blob.core.windows.net/electrogas/2024-09-05_12-30-14_GPS.jpg');
