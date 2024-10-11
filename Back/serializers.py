@@ -1,1 +1,0 @@
-from django.shorcuts import path
