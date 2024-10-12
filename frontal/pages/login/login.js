@@ -21,7 +21,7 @@ const Login = ({ navigation }) => {
 
   const iniciarSesion = async () => {
     try {
-      const respuesta = await fetch('http://192.168.X.X:3000/usuario/login', { // Cambia a /usuario/login
+      const respuesta = await fetch('http://192.168.2.2:3000/usuario/login', { // Cambia a /usuario/login
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ usuario, contrasena }),

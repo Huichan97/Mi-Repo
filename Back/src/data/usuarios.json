@@ -1,0 +1,9 @@
+{
+  "usuarios": [
+    {
+      "id": 1,
+      "nombre": "usuario de ejemplo",
+      "correo": "fe.huichan@duocuc.cl"
+    }
+  ]
+}
