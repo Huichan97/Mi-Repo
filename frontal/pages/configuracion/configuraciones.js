@@ -17,13 +17,13 @@ const Configuraciones = () => {
 
       <ScrollView style={styles.optionsContainer}>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Seguridad')}>
-          <Text style={styles.buttonText}>Seguridad</Text>
+          <Text style={styles.buttonText}>Privacidad y Seguridad</Text>
           <Text style={styles.optionDescription}>Activa o desactiva la huella biométrica.</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AdministrarCuenta')}>
           <Text style={styles.buttonText}>Administrar cuenta</Text>
-          <Text style={styles.optionDescription}>Controla tu contraseña, métodos de pago y permisos en la cuenta.</Text>
+          <Text style={styles.optionDescription}>métodos de pago y cuenta.</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Temas')}>
@@ -36,18 +36,13 @@ const Configuraciones = () => {
           <Text style={styles.optionDescription}>Selecciona los idiomas que gustes.</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Privacidad')}>
-          <Text style={styles.buttonText}>Privacidad</Text>
-          <Text style={styles.optionDescription}>Personaliza los permisos que pueden tener las aplicaciones compartidas.</Text>
-        </TouchableOpacity>
-
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Accesibilidad')} >
           <Text style={styles.buttonText}>Accesibilidad</Text>
           <Text style={styles.optionDescription}>Ajusta las opciones de accesibilidad.</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.logoutButton} disabled={true}>
-          <Text style={styles.logoutText}>Cerrar Cuenta</Text>
+          <Text style={styles.logoutText}>Cerrar Sesion</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>

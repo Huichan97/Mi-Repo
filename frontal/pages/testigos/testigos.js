@@ -56,7 +56,7 @@ const Testigos = () => {
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />
-      <TouchableOpacity style={globalStyles.button} onPress={()=> naviation.navigate('AdministrarTestigos')}>
+      <TouchableOpacity style={globalStyles.button} onPress={()=> naviation.navigate('AdminTestigos')}>
         <Text style={globalStyles.buttonText}>Administrar testigos</Text>
       </TouchableOpacity>
     </View>
