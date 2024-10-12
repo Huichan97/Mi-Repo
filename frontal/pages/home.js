@@ -21,6 +21,10 @@ const Home = ({ navigation }) => {
         title="Ir a Historial"
         onPress={() => navigation.navigate('Historial')}
       />
+      <Button
+        title="Ir a Login"
+        onPress={() => navigation.navigate('Login')}
+      />
     </View>
   );
 };

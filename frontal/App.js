@@ -18,6 +18,7 @@ import Bloqueo from "./pages/configuracion/opciones/seguridad/bloqueo";
 import Verificacion from "./pages/configuracion/opciones/seguridad/verificacion";
 import AlertaSeg from "./pages/configuracion/opciones/seguridad/alertaSeg";
 import AdminTestigos from "./pages/testigos/opciones/adminTestigos";
+import Login from "./pages/login/login";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,8 @@ export default function App(){
       <Stack.Screen name="Verificacion" component={Verificacion}/>
       <Stack.Screen name="AlertaSeg" component={AlertaSeg}/>
 
+      {/* Iniciar sesion */}
+      <Stack.Screen name="Login" component={Login}/>
 
 
       <Stack.Screen name="Temas" component={Temas}/>
