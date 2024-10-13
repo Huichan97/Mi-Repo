@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Switch, TouchableOpacity, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';  // Importar Picker desde el paquete correcto
 import styles from '../../../styles';
 
 const BloqueoAuto = () => {
-  // Estado para el switch de activación del bloqueo automático
   const [bloqueoActivado, setBloqueoActivado] = useState(true);
-
-  // Estado para el tiempo de bloqueo automático
-  const [tiempoBloqueo, setTiempoBloqueo] = useState('1 mes'); // Valor predeterminado
+  const [tiempoBloqueo, setTiempoBloqueo] = useState('30'); // Valor predeterminado en segundos
+  const [temporizadorActivo, setTemporizadorActivo] = useState(false);
+  const [sesionIniciada, setSesionIniciada] = useState(false);
 
   // Función para manejar el cambio del switch
   const toggleBloqueo = () => setBloqueoActivado(previousState => !previousState);
@@ -17,9 +16,41 @@ const BloqueoAuto = () => {
   const confirmarTiempoBloqueo = () => {
     Alert.alert(
       'Confirmación',
-      `El tiempo de bloqueo automático se ha configurado a ${tiempoBloqueo}.`,
+      `El tiempo de bloqueo automático se ha configurado a ${tiempoBloqueo} segundos.`,
       [{ text: 'OK' }]
     );
+  };
+
+  // Función para iniciar sesión (activar el temporizador)
+  const iniciarSesion = () => {
+    setSesionIniciada(true);
+    setTemporizadorActivo(true);
+    iniciarTemporizador();
+  };
+
+  // Función para cerrar sesión
+  const cerrarSesion = () => {
+    Alert.alert(
+      'Sesión Cerrada',
+      'La sesión ha sido cerrada automáticamente por inactividad.',
+      [{ text: 'OK' }]
+    );
+    setSesionIniciada(false);
+    setTemporizadorActivo(false);
+  };
+
+  // Función que maneja el temporizador
+  const iniciarTemporizador = () => {
+    if (bloqueoActivado) {
+      let tiempoRestante = parseInt(tiempoBloqueo);
+      const intervalId = setInterval(() => {
+        tiempoRestante -= 1;
+        if (tiempoRestante <= 0) {
+          clearInterval(intervalId);
+          cerrarSesion(); // Cerrar la sesión cuando el tiempo llega a 0
+        }
+      }, 1000);
+    }
   };
 
   return (
@@ -40,7 +71,7 @@ const BloqueoAuto = () => {
       {/* Mostrar opciones de tiempo solo si el bloqueo está activado */}
       {bloqueoActivado && (
         <View>
-          <Text style={styles.optionDescription}>Selecciona el tiempo de bloqueo:</Text>
+          <Text style={styles.optionDescription}>Selecciona el tiempo de bloqueo (segundos):</Text>
 
           {/* Selector de tiempo de bloqueo */}
           <Picker
@@ -48,12 +79,10 @@ const BloqueoAuto = () => {
             style={styles.picker}
             onValueChange={(itemValue) => setTiempoBloqueo(itemValue)}
           >
-            <Picker.Item label="1 semana" value="1 semana" />
-            <Picker.Item label="2 semanas" value="2 semanas" />
-            <Picker.Item label="1 mes" value="1 mes" />
-            <Picker.Item label="3 meses" value="3 meses" />
-            <Picker.Item label="6 meses" value="6 meses" />
-            <Picker.Item label="1 año" value="1 año" />
+            <Picker.Item label="10 segundos" value="10" />
+            <Picker.Item label="20 segundos" value="20" />
+            <Picker.Item label="30 segundos" value="30" />
+            <Picker.Item label="60 segundos" value="60" />
           </Picker>
 
           {/* Botón para confirmar la selección */}
@@ -61,6 +90,20 @@ const BloqueoAuto = () => {
             <Text style={styles.buttonText}>Confirmar Tiempo de Bloqueo</Text>
           </TouchableOpacity>
         </View>
+      )}
+
+      {/* Botón para iniciar sesión */}
+      {!sesionIniciada ? (
+        <TouchableOpacity style={styles.button} onPress={iniciarSesion}>
+          <Text style={styles.buttonText}>Iniciar Sesión</Text>
+        </TouchableOpacity>
+      ) : (
+        <Text style={styles.optionDescription}>Sesión Activa</Text>
+      )}
+
+      {/* Mostrar mensaje de sesión cerrada */}
+      {!temporizadorActivo && !sesionIniciada && (
+        <Text style={styles.optionDescription}>Sesión cerrada por inactividad</Text>
       )}
     </View>
   );

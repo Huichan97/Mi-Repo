@@ -1,74 +1,101 @@
 import React, { useState } from 'react';
-import { View, Text, Switch, Alert, TouchableOpacity } from 'react-native';
-import styles from '../../../styles';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { Picker } from '@react-native-picker/picker'; // Nuevo Picker
+import styles from '../../../styles'; // Usar los estilos del archivo style.js
 
 const Bloqueo = () => {
-  // Estado para el switch de activación de cada sistema de seguridad
-  const [pinActivado, setPinActivado] = useState(false);
-  const [patronActivado, setPatronActivado] = useState(false);
-  const [huellaActivado, setHuellaActivado] = useState(false);
+  const [selectedValue, setSelectedValue] = useState('');
+  const [pin, setPin] = useState('');
+  const [pinDesbloqueo, setPinDesbloqueo] = useState('');
 
-  // Funciones para manejar los switches
-  const togglePin = () => setPinActivado(previousState => !previousState);
-  const togglePatron = () => setPatronActivado(previousState => !previousState);
-  const toggleHuella = () => setHuellaActivado(previousState => !previousState);
+  const configurarBloqueo = () => {
+    // Lógica para configurar el PIN o el bloqueo seleccionado
+    alert('Bloqueo configurado');
+  };
 
-  // Función para manejar el mensaje si algún sistema está desactivado
-  const mostrarAlertaSeguridad = () => {
-    Alert.alert(
-      'Importante',
-      'Esta es una aplicación donde puedes ser tú mismo, por lo mismo queremos que te mantengas lo más seguro posible ante cualquier actividad mal intencionada por terceros.',
-      [{ text: 'Entendido' }]
-    );
+  const desbloquearDispositivo = () => {
+    // Lógica para desbloquear el dispositivo usando el pinDesbloqueo
+    if (pinDesbloqueo === pin) {
+      alert('Dispositivo desbloqueado');
+    } else {
+      alert('PIN incorrecto');
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bloqueo con PIN/Patrón/Huella</Text>
+      <Text style={styles.title}>Configurar Bloqueo</Text>
 
-      {/* Switch para activar o desactivar PIN */}
-      <View style={styles.switchContainer}>
-        <Text style={styles.optionDescription}>Activar PIN</Text>
-        <Switch
-          trackColor={{ false: '#767577', true: '#81b0ff' }}
-          thumbColor={pinActivado ? '#f5dd4b' : '#f4f3f4'}
-          onValueChange={togglePin}
-          value={pinActivado}
-        />
+      {/* Selector de tipo de bloqueo */}
+      <View style={styles.pickerContainer}>
+        <Text style={styles.pickerLabel}>Tipo de bloqueo:</Text>
+        <Picker
+          selectedValue={selectedValue}
+          style={styles.picker}
+          onValueChange={(itemValue) => setSelectedValue(itemValue)}
+        >
+          <Picker.Item label="Seleccione un tipo" value="" />
+          <Picker.Item label="PIN" value="pin" />
+          <Picker.Item label="Contraseña" value="password" />
+        </Picker>
       </View>
 
-      {/* Switch para activar o desactivar Patrón */}
-      <View style={styles.switchContainer}>
-        <Text style={styles.optionDescription}>Activar Patrón</Text>
-        <Switch
-          trackColor={{ false: '#767577', true: '#81b0ff' }}
-          thumbColor={patronActivado ? '#f5dd4b' : '#f4f3f4'}
-          onValueChange={togglePatron}
-          value={patronActivado}
+      {/* Input para configurar el PIN */}
+      {selectedValue === 'pin' && (
+        <TextInput
+          style={styles.input}
+          placeholder="Ingrese PIN"
+          value={pin}
+          onChangeText={setPin}
+          secureTextEntry={true}
+          keyboardType="numeric"
         />
-      </View>
+      )}
 
-      {/* Switch para activar o desactivar Huella */}
-      <View style={styles.switchContainer}>
-        <Text style={styles.optionDescription}>Activar Huella</Text>
-        <Switch
-          trackColor={{ false: '#767577', true: '#81b0ff' }}
-          thumbColor={huellaActivado ? '#f5dd4b' : '#f4f3f4'}
-          onValueChange={toggleHuella}
-          value={huellaActivado}
+      {/* Input para configurar la Contraseña */}
+      {selectedValue === 'password' && (
+        <TextInput
+          style={styles.input}
+          placeholder="Ingrese Contraseña"
+          value={pin}
+          onChangeText={setPin}
+          secureTextEntry={true}
         />
-      </View>
+      )}
 
-      {/* Si todos los sistemas están desactivados, muestra la leyenda */}
-      {!pinActivado && !patronActivado && !huellaActivado && (
-        <View style={styles.alertContainer}>
-          <Text style={[styles.optionDescription, { textAlign: 'left', color: '#333' }]}>
-            Esta es una aplicación donde puedes ser tú mismo, por lo mismo queremos que te mantengas lo más seguro posible ante cualquier actividad mal intencionada por terceros.
-          </Text>
+      {/* Botón para configurar el bloqueo */}
+      <TouchableOpacity style={styles.button} onPress={configurarBloqueo}>
+        <Text style={styles.buttonText}>Configurar Bloqueo</Text>
+      </TouchableOpacity>
 
-          {/* Botón para mostrar alerta con mensaje de seguridad */}
-          <TouchableOpacity style={styles.button} onPress={mostrarAlertaSeguridad}>
-            <Text style={styles.buttonText}>Más información</Text>
+      {/* Input para ingresar el pin/contraseña de desbloqueo */}
+      {selectedValue === 'pin' && (
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Ingrese PIN para desbloquear"
+            value={pinDesbloqueo}
+            onChangeText={setPinDesbloqueo}
+            secureTextEntry={true}
+            keyboardType="numeric"
+          />
+          <TouchableOpacity style={styles.button} onPress={desbloquearDispositivo}>
+            <Text style={styles.buttonText}>Desbloquear</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {selectedValue === 'password' && (
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Ingrese Contraseña para desbloquear"
+            value={pinDesbloqueo}
+            onChangeText={setPinDesbloqueo}
+            secureTextEntry={true}
+          />
+          <TouchableOpacity style={styles.button} onPress={desbloquearDispositivo}>
+            <Text style={styles.buttonText}>Desbloquear</Text>
           </TouchableOpacity>
         </View>
       )}

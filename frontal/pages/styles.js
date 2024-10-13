@@ -175,6 +175,15 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
+
+  gesturePassword: {
+    width: '100%',
+    height: 300,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    marginVertical: 20,
+  },
+  
 });
 
 export default styles;

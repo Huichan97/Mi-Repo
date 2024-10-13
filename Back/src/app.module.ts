@@ -6,9 +6,17 @@ import { TestigosModule } from './testigos/testigos.module';
 import { BeneficiariosModule } from './beneficiarios/beneficiarios.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { CorreoService } from './usuario/correo.service';
+import { ConfigModule } from '@nestjs/config';
+import { SeguridadModule } from './seguridad/seguridad.module';
 
 @Module({
-  imports: [ConfiguracionModule, TestigosModule, BeneficiariosModule, UsuarioModule],
+  imports: [
+    ConfiguracionModule,
+    TestigosModule,
+    BeneficiariosModule,
+    UsuarioModule,
+    ConfigModule.forRoot(),
+    SeguridadModule],
   controllers: [AppController],
   providers: [AppService, CorreoService],
 })
