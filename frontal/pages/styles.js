@@ -1,11 +1,25 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  // Contenedor principal
+  // Contenedor principal (fondo general)
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#002b55",
+    backgroundColor: "#002b55", // Fondo general
+  },
+
+  // Contenedor para acciones críticas (Eliminar, Cerrar cuenta)
+  containerCritical: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: "#2e2e2e", // Fondo más oscuro para acciones críticas
+  },
+
+  // Contenedor personalizable (para futuras funcionalidades)
+  containerPers: {
+    flex: 1,
+    padding: 20,
+    // Este fondo será personalizable en futuras implementaciones
   },
 
   // Títulos generales
@@ -17,9 +31,9 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
 
-  // Botones reutilizables
+  // Botones reutilizables (color normal celeste o cyan)
   button: {
-    backgroundColor: "#00bcd4",
+    backgroundColor: "#00bcd4", // Color celeste para navegaciones y acciones no drásticas
     padding: 15,
     borderRadius: 10,
     marginVertical: 10,
@@ -31,7 +45,32 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-  // Opciones de configuración
+  // Botón para acciones críticas (Eliminar, Cerrar cuenta)
+  buttonCritical: {
+    backgroundColor: "#ff0000", // Rojo para acciones como eliminar o cerrar cuenta
+    padding: 15,
+    borderRadius: 10,
+    marginVertical: 10,
+    alignItems: "center",
+  },
+
+  // Botón para acciones modificables (Modificar, Ajustes)
+  buttonModify: {
+    backgroundColor: "#ffeb3b", // Amarillo para modificaciones u otros
+    padding: 15,
+    borderRadius: 10,
+    marginVertical: 10,
+    alignItems: "center",
+  },
+
+  // Texto para los botones
+  buttonText: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "bold",
+  },
+
+  // Estilos para opciones de configuración
   optionsContainer: {
     flex: 1,
   },
@@ -58,20 +97,6 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
 
-  // Botón para cerrar sesión
-  logoutButton: {
-    backgroundColor: "#ff0000",
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
-    marginTop: 20,
-  },
-  logoutText: {
-    fontSize: 18,
-    color: "#fff",
-    fontWeight: "bold",
-  },
-
   // Estilo para los inputs (AgregarTestigo y similares)
   input: {
     height: 40,
@@ -85,7 +110,7 @@ const styles = StyleSheet.create({
 
   // Tarjetas reutilizables
   card: {
-    backgroundColor: "#rgb(5, 140, 230)",
+    backgroundColor: "#rgb(5, 140, 230)", // Azul claro para tarjetas
     padding: 15,
     borderRadius: 10,
     marginVertical: 10,
@@ -96,43 +121,7 @@ const styles = StyleSheet.create({
   },
   cardText: {
     fontSize: 16,
-    color: "#rgb(255, 255, 255)",
-  },
-
-  // Estilos para la página de Historial
-  eventContainer: {
-    flexDirection: "row",
-    backgroundColor: "#fff",
-    padding: 10,
-    marginBottom: 15,
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
-  },
-  eventImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 10,
-    marginRight: 15,
-  },
-  eventTextContainer: {
-    flex: 1,
-  },
-  eventDate: {
-    fontSize: 14,
-    color: "#999",
-    marginBottom: 5,
-  },
-  eventTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  eventDescription: {
-    fontSize: 16,
-    color: "#555",
+    color: "#rgb(255, 255, 255)", // Texto blanco en las tarjetas
   },
 
   // Estilo para la imagen del perfil
@@ -144,38 +133,30 @@ const styles = StyleSheet.create({
     alignSelf: "center", // Centrar la imagen
   },
 
-  // para bloqueoAuto
+  // Para la funcionalidad de bloqueoAuto
   switchContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginVertical: 20,
   },
+
+  // Estilo para el Picker
   picker: {
     height: 50,
     width: "100%",
     marginVertical: 20,
   },
 
-  // bloqueo de pin y tal
-  switchContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginVertical: 20,
-  },
+  // Alerta (amarillo claro para advertencias o información)
   alertContainer: {
     marginTop: 20,
     padding: 15,
-    backgroundColor: "#ffeeba",
+    backgroundColor: "#ffeeba", // Amarillo claro para alertas
     borderRadius: 10,
   },
-  buttonText: {
-    fontSize: 18,
-    color: "#fff",
-    fontWeight: "bold",
-  },
 
+  // Estilo para los gestos de contraseña
   gesturePassword: {
     width: '100%',
     height: 300,
@@ -183,7 +164,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginVertical: 20,
   },
-  
 });
 
 export default styles;

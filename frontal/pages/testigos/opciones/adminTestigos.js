@@ -1,29 +1,45 @@
-import React from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+// AdminTestigos.js
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
 import styles from '../../styles';
 
-const AdminTestigos = () => {
-  // Datos de testigos simulados
-  const testigos = [
-    { id: '1', nombre: 'Juan Pérez', numero: '555-1234', circulo: 'Amigo cercano' },
-    { id: '2', nombre: 'María García', numero: '555-5678', circulo: 'Familiar' },
-    { id: '3', nombre: 'Carlos Sánchez', numero: '555-9876', circulo: 'Compañero de trabajo' },
-    { id: '4', nombre: 'Luisa Martínez', numero: '555-6543', circulo: 'Vecina cercana' },
-  ];
+const AdminTestigos = ({ navigation }) => {
+  const [testigos, setTestigos] = useState([]);
 
-  // Renderizar cada item (testigo)
+  // Función para obtener los testigos del backend
+  const obtenerTestigos = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:3000/testigos/todos');
+      const data = await response.json();
+      if (response.ok) {
+        setTestigos(data);
+      } else {
+        Alert.alert('Error', 'No se pudieron cargar los testigos');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Hubo un problema al conectar con el servidor');
+      console.error('Error al obtener los testigos:', error);
+    }
+  };
+
+  useEffect(() => {
+    obtenerTestigos();
+  }, []);
+
   const renderItem = ({ item }) => (
     <View style={styles.card}>
       <Text style={styles.cardText}>{item.nombre}</Text>
-      <Text style={styles.optionDescription}>Número: {item.numero}</Text>
-      <Text style={styles.optionDescription}>Círculo cercano: {item.circulo}</Text>
+      <Text style={styles.optionDescription}>Número: {item.telefono}</Text>
+      <Text style={styles.optionDescription}>Círculo cercano: {item.circuloCercano}</Text>
 
-      {/* Botones de modificar y eliminar */}
       <View style={styles.switchContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => alert(`Modificar a ${item.nombre}`)}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ModificarTestigo', { testigoId: item.id })}>
           <Text style={styles.buttonText}>Modificar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, { backgroundColor: 'red' }]} onPress={() => alert(`Eliminar a ${item.nombre}`)}>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: 'red' }]}
+          onPress={() => navigation.navigate('EliminarTestigo', { testigoId: item.id })}
+        >
           <Text style={styles.buttonText}>Eliminar</Text>
         </TouchableOpacity>
       </View>
@@ -32,21 +48,20 @@ const AdminTestigos = () => {
 
   return (
     <View style={styles.container}>
-      {/* Botón para agregar testigo */}
-      <TouchableOpacity style={styles.button} onPress={() => alert('Agregar testigo')}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AgregarTestigo')}>
         <Text style={styles.buttonText}>Agregar Testigo</Text>
       </TouchableOpacity>
 
-      {/* Descripción sobre el apartado */}
       <Text style={[styles.optionDescription, { marginTop: 10, textAlign: 'center' }]}>
-        Este apartado es para administrar a los testigos. Los testigos deben ser personas cercanas como hermanos, padres o mejores amigos, que recibirán información o mensajes del usuario cuando este ya no esté o decida dejar un mensaje al partir de este mundo.
+        Este apartado es para administrar a los testigos. Los testigos deben ser personas cercanas como hermanos,
+        padres o mejores amigos, que recibirán información o mensajes del usuario cuando este ya no esté o decida
+        dejar un mensaje al partir de este mundo.
       </Text>
 
-      {/* Lista de testigos */}
       <FlatList
         data={testigos}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id.toString()}
       />
     </View>
   );

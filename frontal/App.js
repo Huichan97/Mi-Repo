@@ -19,6 +19,9 @@ import Verificacion from "./pages/configuracion/opciones/seguridad/verificacion"
 import AlertaSeg from "./pages/configuracion/opciones/seguridad/alertaSeg";
 import AdminTestigos from "./pages/testigos/opciones/adminTestigos";
 import Login from "./pages/login/login";
+import AgregarTestigo from "./pages/testigos/opciones/crudTestigo/agregarTestigo";
+import ModificarTestigo from "./pages/testigos/opciones/crudTestigo/modificarTestigo";
+import EliminarTestigo from "./pages/testigos/opciones/crudTestigo/eliminarTestigo";
 
 const Stack = createNativeStackNavigator();
 
@@ -52,6 +55,9 @@ export default function App(){
       {/* testigos */}
       <Stack.Screen name="Testigos" component={Testigos}/>
       <Stack.Screen name="AdminTestigos" component={AdminTestigos}/>
+      <Stack.Screen name="AgregarTestigo" component={AgregarTestigo}/>
+      <Stack.Screen name="ModificarTestigo" component={ModificarTestigo}/>
+      <Stack.Screen name="EliminarTestigo" component={EliminarTestigo}/>
 
       {/* beneficiarios */}
       <Stack.Screen name="Beneficiarios" component={Beneficiarios}/>
