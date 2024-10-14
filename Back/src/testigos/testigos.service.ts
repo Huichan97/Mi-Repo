@@ -1,44 +1,43 @@
 import { Injectable } from '@nestjs/common';
-import { Testigo } from './testigo.inteface';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Testigo } from './testigo.entity';
 
 @Injectable()
 export class TestigosService {
-  private testigos: Testigo[] = [];
+  constructor(
+    @InjectRepository(Testigo)
+    private readonly testigoRepository: Repository<Testigo>,
+  ) {}
 
-  // Método para agregar un nuevo testigo
-  agregarTestigo(testigo: Testigo): { success: boolean; mensaje: string } {
-    this.testigos.push(testigo);
+  async agregarTestigo(testigo: Testigo): Promise<{ success: boolean; mensaje: string }> {
+    await this.testigoRepository.save(testigo);
     return { success: true, mensaje: 'Testigo agregado correctamente' };
   }
 
-  // Método para obtener todos los testigos
-  obtenerTestigos(): Testigo[] {
-    console.log(this.testigos); // Verifica si los testigos están siendo almacenados
-    return this.testigos;
+  async obtenerTestigos(): Promise<Testigo[]> {
+    return this.testigoRepository.find();
   }
 
-  obtenerTestigo(id: number): Testigo {
-    return this.testigos.find(testigo => testigo.id === id);
+  async obtenerTestigo(id: number): Promise<Testigo> {
+    return this.testigoRepository.findOneBy({ id });
   }
 
-  eliminarTestigo(id: number): { success: boolean; mensaje: string } {
-    const index = this.testigos.findIndex(testigo => testigo.id === id);
-    if (index > -1) {
-      this.testigos.splice(index, 1);
+  async eliminarTestigo(id: number): Promise<{ success: boolean; mensaje: string }> {
+    const resultado = await this.testigoRepository.delete(id);
+    if (resultado.affected) {
       return { success: true, mensaje: 'Testigo eliminado correctamente' };
     } else {
       return { success: false, mensaje: 'Testigo no encontrado' };
     }
   }
 
-  modificarTestigo(id: number, nuevoTestigo: Testigo): { success: boolean; mensaje: string } {
-    const index = this.testigos.findIndex(testigo => testigo.id === id);
-    if (index > -1) {
-      // Asegúrate de que solo se actualicen los datos excepto el ID
-      this.testigos[index] = { ...this.testigos[index], ...nuevoTestigo };
+  async modificarTestigo(id: number, nuevoTestigo: Partial<Testigo>): Promise<{ success: boolean; mensaje: string }> {
+    const resultado = await this.testigoRepository.update(id, nuevoTestigo);
+    if (resultado.affected) {
       return { success: true, mensaje: 'Testigo modificado correctamente' };
     } else {
       return { success: false, mensaje: 'Testigo no encontrado' };
     }
-  }  
+  }
 }

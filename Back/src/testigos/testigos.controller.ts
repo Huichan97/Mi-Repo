@@ -1,34 +1,33 @@
 import { Controller, Post, Body, Get, Param, Delete, Put } from '@nestjs/common';
 import { TestigosService } from './testigos.service';
-import { Testigo } from './testigo.inteface';
+import { Testigo } from './testigo.entity'; // Usar la entidad en lugar de la interfaz
 
 @Controller('testigos')
 export class TestigosController {
   constructor(private readonly testigosService: TestigosService) { }
 
   @Get('todos')
-  obtenerTestigos(): Testigo[] {
+  async obtenerTestigos(): Promise<Testigo[]> {  // Cambiado a Promise
     return this.testigosService.obtenerTestigos();
-  }  
+  }
 
   @Get(':id')
-  obtenerTestigo(@Param('id') id: string): Testigo {
+  async obtenerTestigo(@Param('id') id: string): Promise<Testigo> {  // Cambiado a Promise
     return this.testigosService.obtenerTestigo(Number(id));
   }
 
   @Post('agregar')
-  agregarTestigo(@Body() testigo: Testigo): { success: boolean; mensaje: string } {
+  async agregarTestigo(@Body() testigo: Testigo): Promise<{ success: boolean; mensaje: string }> {
     return this.testigosService.agregarTestigo(testigo);
   }
 
   @Delete('eliminar/:id')
-  eliminarTestigo(@Param('id') id: string): { success: boolean; mensaje: string } {
+  async eliminarTestigo(@Param('id') id: string): Promise<{ success: boolean; mensaje: string }> {
     return this.testigosService.eliminarTestigo(Number(id));
   }
 
   @Put('modificar/:id')
-  modificarTestigo(@Param('id') id: string, @Body() nuevoTestigo: Testigo): { success: boolean; mensaje: string } {
+  async modificarTestigo(@Param('id') id: string, @Body() nuevoTestigo: Testigo): Promise<{ success: boolean; mensaje: string }> {
     return this.testigosService.modificarTestigo(Number(id), nuevoTestigo);
   }
-  
 }
