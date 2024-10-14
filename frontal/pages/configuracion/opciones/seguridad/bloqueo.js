@@ -1,24 +1,58 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import { Picker } from '@react-native-picker/picker'; // Nuevo Picker
-import styles from '../../../styles'; // Usar los estilos del archivo style.js
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button, Alert, StyleSheet, Switch } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Bloqueo = () => {
-  const [selectedValue, setSelectedValue] = useState('');
+const Bloqueo = ({ navigation }) => {
   const [pin, setPin] = useState('');
-  const [pinDesbloqueo, setPinDesbloqueo] = useState('');
+  const [pswd, setPswd] = useState('');
+  const [bloqueoActivado, setBloqueoActivado] = useState(false); // Estado del switch
 
-  const configurarBloqueo = () => {
-    // Lógica para configurar el PIN o el bloqueo seleccionado
-    alert('Bloqueo configurado');
+  useEffect(() => {
+    // Cargar el PIN y estado de bloqueo desde AsyncStorage al iniciar
+    const cargarBloqueo = async () => {
+      const storedPin = await AsyncStorage.getItem('userPin');
+      const storedPswd = await AsyncStorage.getItem('userPassword');
+      const bloqueo = await AsyncStorage.getItem('bloqueoActivado');
+
+      if (storedPin) setPin(storedPin);
+      if (storedPswd) setPswd(storedPswd);
+      if (bloqueo === 'true') setBloqueoActivado(true);
+    };
+
+    cargarBloqueo();
+  }, []);
+
+  const toggleSwitch = async () => {
+    const newValue = !bloqueoActivado;
+    setBloqueoActivado(newValue);
+
+    if (newValue) {
+      await AsyncStorage.setItem('bloqueoActivado', 'true');
+      Alert.alert('Bloqueo activado', 'El bloqueo de la app está activado');
+    } else {
+      await AsyncStorage.setItem('bloqueoActivado', 'false');
+      Alert.alert('Bloqueo desactivado', 'El bloqueo de la app ha sido desactivado');
+    }
   };
 
-  const desbloquearDispositivo = () => {
-    // Lógica para desbloquear el dispositivo usando el pinDesbloqueo
-    if (pinDesbloqueo === pin) {
-      alert('Dispositivo desbloqueado');
-    } else {
-      alert('PIN incorrecto');
+  const habilitarBloqueo = async () => {
+    if (!pin && !pswd) {
+      Alert.alert('Error', 'Debes ingresar un PIN o una contraseña');
+      return;
+    }
+
+    try {
+      if (pin) {
+        await AsyncStorage.setItem('userPin', pin);  // Guardamos el PIN
+      }
+      if (pswd) {
+        await AsyncStorage.setItem('userPassword', pswd);  // Guardamos la contraseña
+      }
+      await AsyncStorage.setItem('bloqueoActivado', 'true');
+      setBloqueoActivado(true);
+      Alert.alert('Bloqueo activado', 'Has activado el bloqueo de la app');
+    } catch (error) {
+      Alert.alert('Error', 'No se pudo activar el bloqueo');
     }
   };
 
@@ -26,81 +60,63 @@ const Bloqueo = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Configurar Bloqueo</Text>
 
-      {/* Selector de tipo de bloqueo */}
-      <View style={styles.pickerContainer}>
-        <Text style={styles.pickerLabel}>Tipo de bloqueo:</Text>
-        <Picker
-          selectedValue={selectedValue}
-          style={styles.picker}
-          onValueChange={(itemValue) => setSelectedValue(itemValue)}
-        >
-          <Picker.Item label="Seleccione un tipo" value="" />
-          <Picker.Item label="PIN" value="pin" />
-          <Picker.Item label="Contraseña" value="password" />
-        </Picker>
+      {/* Input para el PIN o contraseña */}
+      <TextInput
+        style={styles.input}
+        placeholder="Ingresa un PIN"
+        value={pin}  // Mostramos el PIN cargado desde AsyncStorage
+        onChangeText={setPin}
+        keyboardType="numeric"
+        maxLength={6}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="O ingresa una contraseña"
+        value={pswd}  // Mostramos la contraseña cargada desde AsyncStorage
+        onChangeText={setPswd}
+        secureTextEntry
+      />
+
+      {/* Switch para habilitar/deshabilitar bloqueo */}
+      <View style={styles.switchContainer}>
+        <Text>Habilitar Bloqueo</Text>
+        <Switch
+          onValueChange={toggleSwitch}
+          value={bloqueoActivado}  // El switch refleja el estado actual del bloqueo
+        />
       </View>
 
-      {/* Input para configurar el PIN */}
-      {selectedValue === 'pin' && (
-        <TextInput
-          style={styles.input}
-          placeholder="Ingrese PIN"
-          value={pin}
-          onChangeText={setPin}
-          secureTextEntry={true}
-          keyboardType="numeric"
-        />
-      )}
-
-      {/* Input para configurar la Contraseña */}
-      {selectedValue === 'password' && (
-        <TextInput
-          style={styles.input}
-          placeholder="Ingrese Contraseña"
-          value={pin}
-          onChangeText={setPin}
-          secureTextEntry={true}
-        />
-      )}
-
-      {/* Botón para configurar el bloqueo */}
-      <TouchableOpacity style={styles.button} onPress={configurarBloqueo}>
-        <Text style={styles.buttonText}>Configurar Bloqueo</Text>
-      </TouchableOpacity>
-
-      {/* Input para ingresar el pin/contraseña de desbloqueo */}
-      {selectedValue === 'pin' && (
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Ingrese PIN para desbloquear"
-            value={pinDesbloqueo}
-            onChangeText={setPinDesbloqueo}
-            secureTextEntry={true}
-            keyboardType="numeric"
-          />
-          <TouchableOpacity style={styles.button} onPress={desbloquearDispositivo}>
-            <Text style={styles.buttonText}>Desbloquear</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      {selectedValue === 'password' && (
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Ingrese Contraseña para desbloquear"
-            value={pinDesbloqueo}
-            onChangeText={setPinDesbloqueo}
-            secureTextEntry={true}
-          />
-          <TouchableOpacity style={styles.button} onPress={desbloquearDispositivo}>
-            <Text style={styles.buttonText}>Desbloquear</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+      <Button title="Guardar y Activar Bloqueo" onPress={habilitarBloqueo} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: '#f0f0f0',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    marginBottom: 10,
+    borderRadius: 5,
+    backgroundColor: '#fff',
+  },
+  switchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+});
 
 export default Bloqueo;

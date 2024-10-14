@@ -22,6 +22,9 @@ import Login from "./pages/login/login";
 import AgregarTestigo from "./pages/testigos/opciones/crudTestigo/agregarTestigo";
 import ModificarTestigo from "./pages/testigos/opciones/crudTestigo/modificarTestigo";
 import EliminarTestigo from "./pages/testigos/opciones/crudTestigo/eliminarTestigo";
+import Signup from "./pages/login/signup";
+import Perfil from "./pages/login/profile";
+import Desbloqueo from "./pages/configuracion/opciones/seguridad/desbloqueo";
 
 const Stack = createNativeStackNavigator();
 
@@ -45,9 +48,12 @@ export default function App(){
       <Stack.Screen name="BloqueoAuto" component={BloqueoAuto}/>
       <Stack.Screen name="Verificacion" component={Verificacion}/>
       <Stack.Screen name="AlertaSeg" component={AlertaSeg}/>
+      <Stack.Screen name="Desbloqueo" component={Desbloqueo}/>
 
       {/* Iniciar sesion */}
       <Stack.Screen name="Login" component={Login}/>
+      <Stack.Screen name="Signup" component={Signup}/>
+      <Stack.Screen name="Perfil" component={Perfil}/>
 
 
       <Stack.Screen name="Temas" component={Temas}/>
